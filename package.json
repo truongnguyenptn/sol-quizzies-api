@@ -1,7 +1,6 @@
 {
-  "name": "nestjs-realworld-example-app",
+  "name": "solquizzies-api",
   "version": "2.0.0",
-  "description": "[![Build Status](https://travis-ci.org/anishkny/node-express-realworld-example-app.svg?branch=master)](https://travis-ci.org/anishkny/node-express-realworld-example-app)",
   "main": "index.js",
   "prisma": {
     "schema": "prisma/schema.prisma"
