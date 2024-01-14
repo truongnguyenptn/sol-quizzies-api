@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/package.json ./
 COPY --from=build /usr/src/app/yarn.lock ./
-COPY .env ./
+COPY .env* ./
 COPY prisma ./
 EXPOSE 8080
 
