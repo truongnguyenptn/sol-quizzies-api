@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { GamesService } from './games.service';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -29,7 +31,20 @@ export class GamesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.gamesService.findOne(+id);
+    try {
+      return this.gamesService.findOne(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Game not found',
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 
   @Patch(':id')

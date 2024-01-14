@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { GenQuestionDto } from './dto/gen-question.dto';
 import { GenerateQuestion } from './commands/generateQuestion';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class QuestionsService {
+  constructor(private readonly prisma: PrismaService) {}
   create(createQuestionDto: CreateQuestionDto) {
     return 'This action adds a new question';
   }
@@ -16,8 +18,8 @@ export class QuestionsService {
     return `This action returns all questions`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  async findOne(gameId: number) {
+
   }
 
   update(id: number, updateQuestionDto: UpdateQuestionDto) {

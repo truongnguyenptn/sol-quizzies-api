@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { StartGameDto } from './dto/start-game.dto';
 import { SubmitgameDto } from './dto/submit-game.dto';
 import { QuestionsService } from 'src/questions/questions.service';
+import { Game } from '@prisma/client';
 
 @Injectable()
 export class GamesService {
@@ -82,8 +83,31 @@ export class GamesService {
     return await this.prisma.game.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} game`;
+  async findOne(gameId: string): Promise<Game> {
+    if (!gameId) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Game not found',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    return await this.prisma.game.findUnique({
+      where: {
+        id: gameId,
+      },
+      include: {
+        questions: {
+          select: {
+            id: true,
+            question: true,
+            options: true,
+          },
+        },
+      },
+    });
   }
 
   update(id: number, updateGameDto: UpdateGameDto) {
