@@ -15,7 +15,23 @@ export class GamesService {
   ) {}
   async create(createGameDto: CreateGameDto) {
     const { topic, type, amount } = createGameDto;
+    
 
+    const data = await this.questionsService.generate({
+      amount,
+      topic,
+      type,
+    });
+    console.log({test:data?.questions});
+    if (!data?.questions && data?.questions?.length === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Questions not created! Please try again',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
     const game = await this.prisma.game.create({
       data: {
         gameType: type || 'mcq',
@@ -25,13 +41,6 @@ export class GamesService {
         topic: topic || 'testTopic',
       },
     });
-
-    const data = await this.questionsService.generate({
-      amount,
-      topic,
-      type,
-    });
-    console.log({test:data?.questions});
     if (type === 'mcq') {
       type mcqQuestion = {
         question: string;
