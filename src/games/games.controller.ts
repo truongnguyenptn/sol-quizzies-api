@@ -17,7 +17,7 @@ import { SubmitgameDto } from './dto/submit-game.dto';
 export class GamesController {
   constructor(private readonly gamesService: GamesService) {}
 
-  @Post()
+  @Post('/create')
   create(@Body() createGameDto: CreateGameDto) {
     return this.gamesService.create(createGameDto);
   }

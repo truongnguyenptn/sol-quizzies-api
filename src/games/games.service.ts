@@ -4,16 +4,82 @@ import { UpdateGameDto } from './dto/update-game.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { StartGameDto } from './dto/start-game.dto';
 import { SubmitgameDto } from './dto/submit-game.dto';
+import { QuestionsService } from 'src/questions/questions.service';
 
 @Injectable()
 export class GamesService {
-  constructor(private readonly prisma: PrismaService) {}
-  create(createGameDto: CreateGameDto) {
-    return 'This action adds a new game';
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly questionsService: QuestionsService,
+  ) {}
+  async create(createGameDto: CreateGameDto) {
+    const { topic, type, amount } = createGameDto;
+
+    const game = await this.prisma.game.create({
+      data: {
+        gameType: type || 'mcq',
+        timeStarted: new Date(),
+        //TODO: adds auth admin
+        userId: 'admin',
+        topic: topic || 'testTopic',
+      },
+    });
+
+    const data = await this.questionsService.generate({
+      amount,
+      topic,
+      type,
+    });
+    console.log(data);
+    if (type === 'mcq') {
+      type mcqQuestion = {
+        question: string;
+        answer: string;
+        option1: string;
+        option2: string;
+        option3: string;
+      };
+
+      const manyData = data.questions.map((question: mcqQuestion) => {
+        // mix up the options lol
+        const options = [
+          question.option1,
+          question.option2,
+          question.option3,
+          question.answer,
+        ].sort(() => Math.random() - 0.5);
+        return {
+          question: question.question,
+          answer: question.answer,
+          options: JSON.stringify(options),
+          gameId: game.id,
+          questionType: 'mcq',
+        };
+      });
+
+      await this.prisma.question.createMany({
+        data: manyData,
+      });
+    } else if (type === 'open_ended') {
+      type openQuestion = {
+        question: string;
+        answer: string;
+      };
+      await this.prisma.question.createMany({
+        data: data.questions.map((question: openQuestion) => {
+          return {
+            question: question.question,
+            answer: question.answer,
+            gameId: game.id,
+            questionType: 'open_ended',
+          };
+        }),
+      });
+    }
   }
 
-  findAll() {
-    return `This action returns all games`;
+  async findAll() {
+    return await this.prisma.game.findMany();
   }
 
   findOne(id: number) {
@@ -74,9 +140,9 @@ export class GamesService {
         options: true,
       },
     });
-    console.log({questions})
+    console.log({ questions });
     // Initialize result object
-    let result = {
+    const result = {
       accuracy: lastAttempt?.percentageCorrect || 0,
       questions: [],
       // time: {
@@ -88,7 +154,7 @@ export class GamesService {
     // Loop through each question to gather answers and accuracy
     for (let i = 0; i < questions.length; i++) {
       const question = questions[i];
-    console.log({question})
+      console.log({ question });
 
       // Find the answer for the current question
       const answer = await this.prisma.answer.findFirst({
@@ -107,7 +173,6 @@ export class GamesService {
       });
     }
     return result;
-
   }
   async submitGame(submitGameDto: SubmitgameDto) {
     const { gameId, userId, attemptId } = submitGameDto;
