@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const argv = yargs.options({
-    port: { type: 'number', default: 3000 },
+    port: { type: 'number', default: 8080 },
   }).argv as { port: number }; // Define the type explicitly
   const appOptions = { cors: true };
 

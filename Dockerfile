@@ -1,31 +1,28 @@
-FROM node:18-alpine As development
+FROM node:lts-alpine as build
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json yarn.lock ./
 
-RUN yarn install
+RUN yarn 
 
 COPY . .
 
-RUN yarn run build
+# Build
+RUN yarn build
 
-FROM node:18-alpine as production
+### Build production image
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+FROM node:lts-alpine as prod
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/package.json ./
+COPY --from=build /usr/src/app/yarn.lock ./
 
-RUN yarn install --only=production
+EXPOSE 8080
 
-COPY . .
+RUN yarn install --frozen-lockfile --production
 
-COPY --from=development /usr/src/app/dist ./dist
-
-EXPOSE 3000
-
-# Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+CMD ["node", "dist/main"]
