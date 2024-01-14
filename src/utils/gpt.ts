@@ -41,7 +41,7 @@ export async function strict_output(
   let error_msg: string = '';
 
   for (let i = 0; i < num_tries; i++) {
-    let output_format_prompt: string = `\nYou are to output the following in json format: ${JSON.stringify(
+    let output_format_prompt: string = `\nYou are to output the following in JSON format: ${JSON.stringify(
       output_format,
     )}. \nDo not put quotation marks or escape character \\ in the output fields.`;
 
@@ -56,7 +56,7 @@ export async function strict_output(
 
     // if input is in a list format, ask it to generate json in a list
     if (list_input) {
-      output_format_prompt += `\nGenerate a list of json, one json for each input element.`;
+      output_format_prompt += `\nGenerate a list of JSON, one JSON for each input element.`;
     }
 
     // Use OpenAI to get a response
@@ -115,13 +115,14 @@ export async function strict_output(
           console.log({ key }, output[index], index);
           // if output field missing, raise an error
           if (!(key in output[index])) {
-            console.log('output', output[index]);
+            console.log('key not in outputindex', output[index]);
             // throw new Error(`${key} not in json output`);
           }
 
           // check that one of the choices given for the list of words is an unknown
           if (Array.isArray(output_format[key])) {
             const choices = output_format[key] as string[];
+            console.log({ choices });
             // ensure output is not a list
             if (Array.isArray(output[index][key])) {
               output[index][key] = output[index][key][0];

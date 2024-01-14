@@ -18,9 +18,7 @@ export class QuestionsService {
     return `This action returns all questions`;
   }
 
-  async findOne(gameId: number) {
-
-  }
+  async findOne(gameId: number) {}
 
   update(id: number, updateQuestionDto: UpdateQuestionDto) {
     return `This action updates a #${id} question`;

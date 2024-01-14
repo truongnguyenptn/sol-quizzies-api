@@ -31,7 +31,7 @@ export class GamesService {
       topic,
       type,
     });
-    console.log(data);
+    console.log({test:data?.questions});
     if (type === 'mcq') {
       type mcqQuestion = {
         question: string;
@@ -77,6 +77,7 @@ export class GamesService {
         }),
       });
     }
+    return { gameId: game.id };
   }
 
   async findAll() {
@@ -99,7 +100,7 @@ export class GamesService {
         id: gameId,
       },
       include: {
-        questions: {
+        Question: {
           select: {
             id: true,
             question: true,
