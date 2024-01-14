@@ -1,12 +1,10 @@
-import { Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TagService {
-  constructor(
-  ) {}
+  constructor() {}
 
   // async findAll(): Promise<TagEntity[]> {
   //   return await this.tagRepository.find();
   // }
-
 }

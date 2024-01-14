@@ -4,5 +4,4 @@ export class FollowsEntity {
   followerId: number;
 
   followingId: number;
-
 }

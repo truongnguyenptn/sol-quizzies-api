@@ -1,8 +1,8 @@
-import * as dotenv from 'dotenv'
+import * as dotenv from 'dotenv';
 
 export const SECRET = 'secret-key';
-dotenv.config()
+dotenv.config();
 
 export const config = {
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-}
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+};

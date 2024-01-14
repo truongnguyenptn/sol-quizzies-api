@@ -4,15 +4,12 @@ import { ProfileService } from './profile.service';
 import { ProfileRO } from './profile.interface';
 import { User } from '../user/user.decorator';
 
-import {
-  ApiBearerAuth, ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('profiles')
 @Controller('profiles')
 export class ProfileController {
-
   constructor(private readonly profileService: ProfileService) {}
 
   // @Get(':username')
@@ -29,5 +26,4 @@ export class ProfileController {
   // async unFollow(@User('id') userId: number,  @Param('username') username: string): Promise<ProfileRO> {
   //   return await this.profileService.unFollow(userId, username);
   // }
-
 }

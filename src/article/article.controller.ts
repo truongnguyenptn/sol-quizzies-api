@@ -1,4 +1,13 @@
-import {Get, Post, Body, Put, Delete, Query, Param, Controller} from '@nestjs/common';
+import {
+  Get,
+  Post,
+  Body,
+  Put,
+  Delete,
+  Query,
+  Param,
+  Controller,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { ArticleService } from './article.service';
 import { CreateArticleDto, CreateCommentDto } from './dto';
@@ -9,14 +18,14 @@ import { User } from '../user/user.decorator';
 import {
   ApiBearerAuth,
   ApiResponse,
-  ApiOperation, ApiTags,
+  ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('articles')
 @Controller('articles')
 export class ArticleController {
-
   constructor(private readonly articleService: ArticleService) {}
 
   // @ApiOperation({ summary: 'Get all articles' })
@@ -25,7 +34,6 @@ export class ArticleController {
   // async findAll(@Query() query): Promise<ArticlesRO> {
   //   return await this.articleService.findAll(query);
   // }
-
 
   // @ApiOperation({ summary: 'Get article feed' })
   // @ApiResponse({ status: 200, description: 'Return article feed.'})
@@ -102,5 +110,4 @@ export class ArticleController {
   // async unFavorite(@User('id') userId: number, @Param('slug') slug) {
   //   return await this.articleService.unFavorite(userId, slug);
   // }
-
 }

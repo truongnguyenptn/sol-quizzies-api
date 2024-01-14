@@ -1,9 +1,11 @@
-import { config } from "../config";
+import { config } from '../config';
 import OpenAI from 'openai';
-console.log("OpenAI API key:", config.OPENAI_API_KEY);
+console.log('OpenAI API key:', config.OPENAI_API_KEY);
 
 const openai = new OpenAI({
-  apiKey: config.OPENAI_API_KEY || "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"
+  apiKey:
+    config.OPENAI_API_KEY ||
+    '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',
 });
 
 interface OutputFormat {
@@ -14,34 +16,33 @@ export async function strict_output(
   system_prompt: string,
   user_prompt: string | string[],
   output_format: OutputFormat,
-  default_category: string = "",
+  default_category: string = '',
   output_value_only: boolean = false,
-  model: string = "gpt-3.5-turbo",
+  model: string = 'gpt-3.5-turbo',
   temperature: number = 1,
   num_tries: number = 3,
-  verbose: boolean = false
+  verbose: boolean = false,
 ): Promise<
   {
     question: string;
     answer: string;
   }[]
 > {
-
   // if the user input is in a list, we also process the output as a list of json
   const list_input: boolean = Array.isArray(user_prompt);
   // if the output format contains dynamic elements of < or >, then add to the prompt to handle dynamic elements
   const dynamic_elements: boolean = /<.*?>/.test(JSON.stringify(output_format));
   // if the output format contains list elements of [ or ], then we add to the prompt to handle lists
-  console.log("tryblock")
+  console.log('tryblock');
 
   const list_output: boolean = /\[.*?\]/.test(JSON.stringify(output_format));
 
   // start off with no error message
-  let error_msg: string = "";
+  let error_msg: string = '';
 
   for (let i = 0; i < num_tries; i++) {
     let output_format_prompt: string = `\nYou are to output the following in json format: ${JSON.stringify(
-      output_format
+      output_format,
     )}. \nDo not put quotation marks or escape character \\ in the output fields.`;
 
     if (list_output) {
@@ -64,40 +65,42 @@ export async function strict_output(
       model: model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content: system_prompt + output_format_prompt + error_msg,
         },
-        { role: "user", content: user_prompt.toString() },
+        { role: 'user', content: user_prompt.toString() },
       ],
     });
 
     let res: string =
-      response.choices[0].message?.content?.replace(/'/g, '"') ?? "";
+      response.choices[0].message?.content?.replace(/'/g, '"') ?? '';
 
     // ensure that we don't replace away apostrophes in text
     res = res.replace(/(\w)"(\w)/g, "$1'$2");
 
     if (verbose) {
       console.log(
-        "System prompt:",
-        system_prompt + output_format_prompt + error_msg
+        'System prompt:',
+        system_prompt + output_format_prompt + error_msg,
       );
-      console.log("\nUser prompt:", user_prompt);
-      console.log("\nGPT response:", res);
+      console.log('\nUser prompt:', user_prompt);
+      console.log('\nGPT response:', res);
     }
 
     // try-catch block to ensure output format is adhered to
     try {
       let output: any = JSON.parse(res);
-      console.log("type", output);
+      console.log('type', output);
 
       if (list_input) {
         if (!Array.isArray(output)) {
-          const arrayOfJson = Object.keys(output).map((key,value) => ({ [key]: output[key] }));
-           output = arrayOfJson;
+          const arrayOfJson = Object.keys(output).map((key, value) => ({
+            [key]: output[key],
+          }));
+          output = arrayOfJson;
           // throw new Error("Output format not in a list of json");
         }
-        console.log("Output:", output);
+        console.log('Output:', output);
       } else {
         output = [output];
       }
@@ -109,10 +112,10 @@ export async function strict_output(
           if (/<.*?>/.test(key)) {
             continue;
           }
-          console.log({key},output[index],index)
+          console.log({ key }, output[index], index);
           // if output field missing, raise an error
           if (!(key in output[index])) {
-            console.log("output",output[index])
+            console.log('output', output[index]);
             throw new Error(`${key} not in json output`);
           }
 
@@ -128,8 +131,8 @@ export async function strict_output(
               output[index][key] = default_category;
             }
             // if the output is a description format, get only the label
-            if (output[index][key].includes(":")) {
-              output[index][key] = output[index][key].split(":")[0];
+            if (output[index][key].includes(':')) {
+              output[index][key] = output[index][key].split(':')[0];
             }
           }
         }
@@ -147,8 +150,8 @@ export async function strict_output(
       return list_input ? output : output[0];
     } catch (e) {
       error_msg = `\n\nResult: ${res}\n\nError message: ${e}`;
-      console.log("An exception occurred:", e);
-      console.log("Current invalid json format:", res);
+      console.log('An exception occurred:', e);
+      console.log('Current invalid json format:', res);
     }
   }
 

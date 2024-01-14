@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { GamesService } from './games.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
@@ -36,21 +44,21 @@ export class GamesController {
 
   @Post('start')
   startGame(@Body() startGameDto: StartGameDto) {
-    console.log("start")
+    console.log('start');
     const { gameId, userId } = startGameDto;
     return this.gamesService.startGame(startGameDto);
   }
 
   @Post('statistics')
   gameStatistics(@Body() startGameDto: StartGameDto) {
-    console.log("statistics")
+    console.log('statistics');
     const { gameId, userId } = startGameDto;
-    return this.gamesService.gameStatistics(gameId, userId );
+    return this.gamesService.gameStatistics(gameId, userId);
   }
 
   @Post('submit')
   submitGame(@Body() submitgameDto: SubmitgameDto) {
-    console.log("submit")
+    console.log('submit');
     const { gameId, userId } = submitgameDto;
     return this.gamesService.submitGame(submitgameDto);
   }

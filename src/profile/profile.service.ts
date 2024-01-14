@@ -1,4 +1,4 @@
-import {  Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../user/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -90,5 +90,4 @@ export class ProfileService {
 
   //   return {profile};
   // }
-
 }
