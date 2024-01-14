@@ -65,6 +65,7 @@ model Game {
   topic       String
   timeEnded   DateTime?
   gameType    Game_gameType
+  Question    Question[]
 
   @@index([userId])
 }
@@ -77,6 +78,8 @@ model Question {
   options      Json?
   questionType Question_questionType
   score        Int                   @default(0)
+
+  Game Game @relation(fields: [gameId], references: [id], map: "Question_gameId_fkey")
 
   @@index([gameId])
 }
