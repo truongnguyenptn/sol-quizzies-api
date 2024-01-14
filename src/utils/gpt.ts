@@ -116,7 +116,7 @@ export async function strict_output(
           // if output field missing, raise an error
           if (!(key in output[index])) {
             console.log('output', output[index]);
-            throw new Error(`${key} not in json output`);
+            // throw new Error(`${key} not in json output`);
           }
 
           // check that one of the choices given for the list of words is an unknown

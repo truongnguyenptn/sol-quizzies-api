@@ -74,7 +74,7 @@ export class GamesService {
         options: true,
       },
     });
-
+    console.log({questions})
     // Initialize result object
     let result = {
       accuracy: lastAttempt?.percentageCorrect || 0,
@@ -88,13 +88,13 @@ export class GamesService {
     // Loop through each question to gather answers and accuracy
     for (let i = 0; i < questions.length; i++) {
       const question = questions[i];
+    console.log({question})
 
       // Find the answer for the current question
       const answer = await this.prisma.answer.findFirst({
         where: {
           attemptId: lastAttempt?.id,
           questionId: question.id,
-          userId: userId,
         },
       });
       console.log({ answer });
@@ -105,8 +105,9 @@ export class GamesService {
         userAnswer: answer?.userAnswer,
         isCorrect: answer?.isCorrect,
       });
-      return result;
     }
+    return result;
+
   }
   async submitGame(submitGameDto: SubmitgameDto) {
     const { gameId, userId, attemptId } = submitGameDto;
