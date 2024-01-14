@@ -8,6 +8,7 @@ RUN yarn
 
 COPY . .
 # Build
+RUN npx prisma generate
 RUN yarn build
 
 ### Build production image
