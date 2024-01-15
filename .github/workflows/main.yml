@@ -45,7 +45,7 @@ jobs:
           region: ap-southeast-1
           access-role-arn: ${{ secrets.ROLE_ARN }}
           port: 8080
-          wait-for-service-stability: true
+          wait-for-service-stability-seconds: 600
       
       - name: App Runner output
         run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}" 
