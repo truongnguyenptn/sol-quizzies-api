@@ -29,7 +29,7 @@ jobs:
         env:
           ECR_REGISTRY: 522927643345
           ECR_REPOSITORY: ${{secrets.ECR_REPOSITORY}}
-          IMAGE_TAG: ${{github.sha}}
+          IMAGE_TAG: demo
         run: |
           docker build -t 522927643345/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push 522927643345/$ECR_REPOSITORY:$IMAGE_TAG
