@@ -34,6 +34,20 @@ jobs:
           docker build -t sol-quizzies-api:demo .
           docker tag sol-quizzies-api:demo   522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo;
           docker push 522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" 
+
+      - name: Deploy to App Runner
+        id: deploy-apprunner
+        uses: awslabs/amazon-app-runner-deploy@main        
+        with:
+          service: sol-quizzies-api 
+          image: 522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo     
+          region: ap-southeast-1
+          port: 8080
+          wait-for-service-stability: true
+      
+      - name: App Runner output
+        run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}" 
 
       - name: Logout to Amazon ECR
         if: always()
