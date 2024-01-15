@@ -15,14 +15,13 @@ export class GamesService {
   ) {}
   async create(createGameDto: CreateGameDto) {
     const { topic, type, amount } = createGameDto;
-    
 
     const data = await this.questionsService.generate({
       amount,
       topic,
       type,
     });
-    console.log({test:data?.questions});
+    console.log({ test: data?.questions });
     if (!data?.questions && data?.questions?.length === 0) {
       throw new HttpException(
         {
