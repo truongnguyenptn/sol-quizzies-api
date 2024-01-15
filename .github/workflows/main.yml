@@ -45,7 +45,6 @@ jobs:
           region: ap-southeast-1
           access-role-arn: ${{ secrets.ROLE_ARN }}
           port: 8080
-          runtime: NODEJS_12   
           cpu : 1
           memory : 2  
           wait-for-service-stability-seconds: 600
