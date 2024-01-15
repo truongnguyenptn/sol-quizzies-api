@@ -29,7 +29,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push image to Amazon ECR
-        env: env
+        env: 
+          OPENAI_API_KEY: ${{ env.OPENAI_API_KEY }}
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          NEXT_PUBLIC_API_URL: ${{ env.MY_ENV_VAR }}
         
         run: |
           docker build -t sol-quizzies-api:demo .
