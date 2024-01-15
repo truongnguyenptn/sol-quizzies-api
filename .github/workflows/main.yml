@@ -3,6 +3,9 @@ name: NestJS-Backend:CI
 on:
   push:
     branches: ['master']
+env: 
+  # Setting an environment variable with the value of a configuration variable
+
 
 jobs:
   build:
@@ -29,7 +32,7 @@ jobs:
         env:
           ECR_REGISTRY: 522927643345
           ECR_REPOSITORY: ${{secrets.ECR_REPOSITORY}}
-          IMAGE_TAG: demo
+        environment: env
         run: |
           docker build -t sol-quizzies-api:demo .
           docker tag sol-quizzies-api:demo   522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo;
