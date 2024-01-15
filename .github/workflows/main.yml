@@ -43,6 +43,7 @@ jobs:
           service: sol-quizzies-api 
           image: 522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo     
           region: ap-southeast-1
+          access-role-arn: ${{ secrets.ROLE_ARN }}
           port: 8080
           wait-for-service-stability: true
       
