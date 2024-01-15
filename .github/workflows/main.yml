@@ -34,12 +34,12 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ env.MY_ENV_VAR }}
         
         run: 
-          echo "OPENAI_API_KEY=${OPENAI_API_KEY}" > .env;
-          echo "DATABASE_URL=${DATABASE_URL}" >> .env;
+          echo "OPENAI_API_KEY=${{ env.OPENAI_API_KEY }}" > .env;
+          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env;
           echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" >> .env;
 
           cat .env
-          
+
           docker build -t sol-quizzies-api:demo . ;
           docker tag sol-quizzies-api:demo 522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo;
           docker push 522927643345.dkr.ecr.ap-southeast-1.amazonaws.com/sol-quizzies-api:demo;
