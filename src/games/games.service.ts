@@ -139,7 +139,7 @@ export class GamesService {
       data: {
         gameId: gameId,
         userId: userId,
-        id: Math.random().toString(36).substr(2, 9),
+        timeStarted: new Date(),
         attemptCount: attemptCount + 1,
       },
     });
@@ -250,6 +250,7 @@ export class GamesService {
         userId: userId,
       },
       data: {
+        timeEnded: new Date(),
         percentageCorrect: accuracy,
       },
     });

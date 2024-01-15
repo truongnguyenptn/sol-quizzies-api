@@ -34,6 +34,8 @@ export class AnswerController {
 
   @Post('check')
   checkAnswer(@Body() createAnswerDto: CreateAnswerDto) {
-    return this.answerService.checkAnswerResult(createAnswerDto);
+    return {
+      isCorrect: this.answerService.checkAnswerResult(createAnswerDto),
+    };
   }
 }

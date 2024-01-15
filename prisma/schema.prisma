@@ -57,7 +57,8 @@ model Attempt {
   accuracy          Float?
   percentageCorrect Float?
   Answer            Answer[]
-
+  timeStarted       DateTime?
+  timeEnded         DateTime?
   @@index([gameId])
 }
 
