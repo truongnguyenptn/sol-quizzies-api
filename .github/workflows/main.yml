@@ -3,7 +3,6 @@ name: NestJS-Backend:CI
 on:
   push:
     branches: ['master']
-env: env
   # Setting an environment variable with the value of a configuration variable
 
 
