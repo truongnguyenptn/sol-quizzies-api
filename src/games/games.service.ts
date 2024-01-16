@@ -8,7 +8,7 @@ import { QuestionsService } from 'src/questions/questions.service';
 import { Game } from '@prisma/client';
 
 @Injectable()
-export class GamesService {
+export class GameService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly questionsService: QuestionsService,
@@ -146,7 +146,7 @@ export class GamesService {
     return attempt;
   }
 
-  async gameStatistics(gameId: string, userId: string) {
+  async getDetailedGameStatistics(gameId: string, userId: string) {
     console.log({ gameId }, { userId });
     const attemptCount = await this.prisma.attempt.count({
       where: {
@@ -185,7 +185,6 @@ export class GamesService {
       // }
     };
 
-    // Loop through each question to gather answers and accuracy
     for (let i = 0; i < questions.length; i++) {
       const question = questions[i];
       console.log({ question });
@@ -255,5 +254,21 @@ export class GamesService {
         percentageCorrect: accuracy,
       },
     });
+  }
+
+  async getLeaderboard(gameId: string): Promise<any[]> {
+    const leaderboard = await this.prisma.attempt.findMany({
+      where: {
+        gameId: gameId,
+        isFinished: true,
+      },
+      orderBy: [{ score: 'desc' }],
+      select: {
+        userId: true,
+        score: true,
+      },
+    });
+
+    return leaderboard;
   }
 }

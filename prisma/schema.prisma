@@ -52,7 +52,7 @@ model Attempt {
   gameId            String
   userId            String
   attemptCount      Int       @default(0)
-  totalScore        Int       @default(0)
+  score             Int       @default(0)
   isFinished        Boolean?
   accuracy          Float?
   percentageCorrect Float?

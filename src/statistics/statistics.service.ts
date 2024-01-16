@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Get, Injectable, Param } from '@nestjs/common';
 import { CreateStatisticDto } from './dto/create-statistic.dto';
 import { UpdateStatisticDto } from './dto/update-statistic.dto';
+import { GameService } from 'src/games/games.service';
 
 @Injectable()
 export class StatisticsService {
+  constructor(private readonly gameService: GameService) {}
   create(createStatisticDto: CreateStatisticDto) {
     return 'This action adds a new statistic';
   }
@@ -22,5 +24,16 @@ export class StatisticsService {
 
   remove(id: number) {
     return `This action removes a #${id} statistic`;
+  }
+
+  @Get('leaderboard/:gameId')
+  async getLeaderboard(@Param('gameId') gameId: string) {
+    try {
+      // Call the appropriate method from the GameService to get the leaderboard
+      const leaderboard = await this.gameService.getLeaderboard(gameId);
+      return { success: true, data: leaderboard };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   }
 }

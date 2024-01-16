@@ -19,11 +19,9 @@ import { AuthMiddleware } from '../user/auth.middleware';
 })
 export class ProfileModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes({
-        path: 'profiles/:username/follow',
-        method: RequestMethod.ALL,
-      });
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: 'profiles/:username/follow',
+      method: RequestMethod.ALL,
+    });
   }
 }
