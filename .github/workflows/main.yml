@@ -28,6 +28,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push image to Amazon ECR
+        id: build-image
         env: 
           OPENAI_API_KEY: ${{ env.OPENAI_API_KEY }}
           DATABASE_URL: ${{ env.DATABASE_URL }}
@@ -45,7 +46,7 @@ jobs:
         uses: awslabs/amazon-app-runner-deploy@main        
         with:
           service: sol-quizzies-api 
-          image: ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:demo     
+          image: ${{ steps.build-image.outputs.image }}  
           region: ap-southeast-1
           access-role-arn: ${{ secrets.ROLE_ARN }}
           port: 8080
