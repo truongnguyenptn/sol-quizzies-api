@@ -48,17 +48,18 @@ model Answer {
 }
 
 model Attempt {
-  id                String   @id @default(uuid())
+  id                String    @id @default(uuid())
   gameId            String
   userId            String
-  attemptCount      Int      @default(0)
-  totalScore        Int      @default(0)
+  attemptCount      Int       @default(0)
+  totalScore        Int       @default(0)
   isFinished        Boolean?
   accuracy          Float?
   percentageCorrect Float?
   Answer            Answer[]
   timeStarted       DateTime?
   timeEnded         DateTime?
+
   @@index([gameId])
 }
 

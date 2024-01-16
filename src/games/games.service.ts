@@ -178,6 +178,7 @@ export class GamesService {
     const result = {
       accuracy: lastAttempt?.percentageCorrect || 0,
       questions: [],
+      score: 0,
       // time: {
       //   start: lastAttempt?. || 0,
       //   end: lastAttempt?.updatedAt || 1,
