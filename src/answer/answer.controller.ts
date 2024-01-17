@@ -41,9 +41,17 @@ export class AnswerController {
   // }
 
   @Post('check')
-  checkAnswer(@Body() createAnswerDto: CreateAnswerDto) {
-    return {
-      isCorrect: this.answerService.checkAnswerResult(createAnswerDto),
-    };
+  async checkAnswer(@Body() createAnswerDto: CreateAnswerDto) {
+    try {
+      const isCorrect = await this.answerService.checkAnswerResult(createAnswerDto);
+      return {
+        isCorrect: isCorrect,
+      };
+    } catch (error) {
+      // Handle errors accordingly (e.g., log, throw, etc.)
+      return {
+        error: error.message,  // Include an error message in the response if needed
+      };
+    }
   }
 }

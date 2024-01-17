@@ -31,7 +31,7 @@ export class StatisticsService {
     try {
       // Call the appropriate method from the GameService to get the leaderboard
       const leaderboard = await this.gameService.getLeaderboard(gameId);
-      return { success: true, data: leaderboard };
+      return { leaderboard };
     } catch (error) {
       return { success: false, error: error.message };
     }

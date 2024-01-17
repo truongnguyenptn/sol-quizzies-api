@@ -45,7 +45,7 @@ jobs:
         id: deploy-apprunner
         uses: awslabs/amazon-app-runner-deploy@main        
         with:
-          service: sol-quizzies-api 
+          service: ${{ secrets.ECR_REPOSITORY }}
           image: ${{ steps.build-image.outputs.image }}  
           region: ap-southeast-1
           access-role-arn: ${{ secrets.ROLE_ARN }}
